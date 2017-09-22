@@ -1,0 +1,15 @@
+#!/usr/bin/env perl
+use strict;
+my $shaFromProvider = 'd50e69a3e6d6b9d4b9cbe56cd3736cef665b708a4a2e5d9024f8eef439a91bba *linuxmint-18.2-cinnamon-64bit.iso';
+my $folder = "../";
+my $isoToVerify = "${folder}linuxmint-18.2-cinnamon-64bit.iso";
+my $shaCommand = '/bin/sha256sum';
+my $verify = `$shaCommand -b $isoToVerify`;
+my $success;
+$verify =~ s!$folder!!;		# Remove folder path from string
+chomp($verify);			# remove \n
+if ("$verify" eq "$shaFromProvider") { $success = "Success\n"; } else { $success = "Failed\n";}
+my $providerStringLength = length($shaFromProvider);
+my $verifiedStringLength = length($verify);
+print qq{Provider Verified String (Length:$providerStringLength)\n$shaFromProvider\n$verify\nFreshly Verified String (Length:$verifiedStringLength)\nResult: $success};
+
